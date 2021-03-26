@@ -1,16 +1,33 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
+import { db } from "../firebase";
+import firebase from "firebase"
 
 const ChatInput = ({ channelName, channelId }) => {
+  const [input, setInput] = useState('');
+
   const sendMessage = (e) => {
     e.preventDefault(); //Prevents refresh
+
+    if (!channelId) {
+        return false;
+    }
+
+    db.collection('rooms').doc(channelId).collection('messages').add({
+        message: input,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        user: 'Klaryon',
+        userImage: 'https://i1.wp.com/www.justitonotario.es/wp-content/uploads/por-fin-cobre-mi-factura-face.jpg?resize=618%2C464&ssl=1'
+    });
+
+    setInput('');
   };
 
   return (
     <ChatInputContainer>
       <form action="">
-        <input placeholder={`Message #ROOM`} />
+        <input value={input} onChange = { (e) => setInput(e.target.value)} placeholder={`Message #ROOM`} />
         <Button hidden type="submit" onClick={sendMessage}>
           SEND
         </Button>
