@@ -26,9 +26,9 @@ const Chat = () => {
 
   useEffect(() => {
     chatRef?.current?.scrollIntoView({
-        behavior: "smooth",
+      behavior: "smooth",
     });
-  }, [roomId, loading])
+  }, [roomId, loading]);
 
   return (
     <ChatContainer>
@@ -49,17 +49,23 @@ const Chat = () => {
         <ChatMessages>
           {roomMessages?.docs.map((doc) => {
             const { message, timestamp, user, userImage } = doc.data();
-            return <Message
+            return (
+              <Message
                 key={doc.id}
                 message={message}
                 timestamp={timestamp}
                 user={user}
                 userImage={userImage}
-            />;
+              />
+            );
           })}
           <ChatBottom ref={chatRef} />
         </ChatMessages>
-        <ChatInput channelName={roomDetails?.data().name} channelId={roomId} />
+        <ChatInput
+          chatRef={chatRef}
+          channelName={roomDetails?.data().name}
+          channelId={roomId}
+        />
       </>
     </ChatContainer>
   );
@@ -68,7 +74,7 @@ const Chat = () => {
 export default Chat;
 
 const ChatBottom = styled.div`
-    padding-bottom: 200px;
+  padding-bottom: 200px;
 `;
 
 const Header = styled.div`
