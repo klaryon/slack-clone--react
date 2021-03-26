@@ -27,7 +27,7 @@ const ChatInput = ({ channelName, channelId }) => {
   return (
     <ChatInputContainer>
       <form action="">
-        <input value={input} onChange = { (e) => setInput(e.target.value)} placeholder={`Message #ROOM`} />
+        <input value={input} onChange = { (e) => setInput(e.target.value)} placeholder={`Message #${channelName}`} />
         <Button hidden type="submit" onClick={sendMessage}>
           SEND
         </Button>
