@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Button } from "@material-ui/core";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import firebase from "firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const ChatInput = ({ channelName, channelId, chatRef }) => {
   const [input, setInput] = useState("");
+  const [user] = useAuthState(auth);
 
   const sendMessage = (e) => {
     e.preventDefault(); //Prevents refresh
@@ -17,9 +19,8 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
     db.collection("rooms").doc(channelId).collection("messages").add({
       message: input,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      user: "Klaryon",
-      userImage:
-        "https://i1.wp.com/www.justitonotario.es/wp-content/uploads/por-fin-cobre-mi-factura-face.jpg?resize=618%2C464&ssl=1",
+      user: user.displayName,
+      userImage: user.photoURL,
     });
 
     chatRef.current.scrollIntoView({
